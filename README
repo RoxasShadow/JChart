@@ -1,0 +1,5 @@
+Small suite of tests with JFreeChart.
+The most important is FreeMemoryViewer works only in Linux beacuse it use GNU free, but you can port it editing util.rb with your commands.
+It need a Ruby interpreter too.
+
+~ Giovanni Capuano <http://www.giovannicapuano.net>
