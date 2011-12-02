@@ -67,7 +67,7 @@ public class FreeMemoryViewer extends JFrame {
 	}
 	
 	private double getRam(String arg) {
-		return exec("./util.rb "+arg);
+		return exec("./util "+arg);
 	}
 	
 	private void updateChart() {

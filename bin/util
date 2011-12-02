@@ -1,0 +1,10 @@
+#!/bin/bash
+if [ "$1" == "total" ] ; then
+	echo "$(free -mto | grep Mem: | awk '{ print $2 }')"
+elif [ "$1" == "used" ] ; then
+	echo "$(free -mto | grep Mem: | awk '{ print $3 }')"
+elif [ "$1" == "free" ] ; then
+	echo "$(free -mto | grep Mem: | awk '{ print $4 }')"
+else
+	echo "0"
+fi
