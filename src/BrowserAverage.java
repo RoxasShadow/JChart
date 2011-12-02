@@ -20,8 +20,13 @@ import org.jfree.chart.plot.*;
 import org.jfree.util.Rotation;
 import javax.swing.*;
 import java.awt.event.*;
+import java.awt.Color;
+import java.util.Random;
 
 public class BrowserAverage extends JFrame {
+	private Rotator rotator;
+	private JButton moarspeed;
+	
 	public BrowserAverage(String applicationTitle, String chartTitle) {
 		super(applicationTitle);
 		setSize(500, 270);
@@ -29,10 +34,27 @@ public class BrowserAverage extends JFrame {
 		setFocusable(true);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		
+		moarspeed = new JButton("MOAR");
+		
 		PieDataset dataset = createDataset();
 		JFreeChart chart = createChart(dataset, chartTitle);
 		ChartPanel chartPanel = new ChartPanel(chart);
-		setContentPane(chartPanel);
+		
+		JPanel panel1 = new JPanel();
+		panel1.add(chartPanel);
+		JPanel panel2 = new JPanel();
+		panel2.add(moarspeed);
+		JPanel container = new JPanel();
+		container.add(panel1);
+		container.add(panel2);
+		getContentPane().add(container); 
+	
+		moarspeed.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				rotator.setSpeed(rotator.getSpeed()+1);
+			}
+		});
+		
 		pack();
 	}
 	
@@ -52,7 +74,8 @@ public class BrowserAverage extends JFrame {
 		plot.setStartAngle(0);
 		plot.setDirection(Rotation.ANTICLOCKWISE);
 		plot.setForegroundAlpha(0.5f);
-		new Rotator(plot, 2).start();
+		rotator = new Rotator(plot, 0);
+		rotator.start();
 		return chart;
 	}
 }
@@ -60,6 +83,15 @@ public class BrowserAverage extends JFrame {
 class Rotator extends Timer implements ActionListener {
 	private PiePlot3D plot;
 	private int angle, speed;
+	private Random r;
+
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+	
+	public int getSpeed() {
+		return speed;
+	}
 
 	public Rotator(PiePlot3D plot, int speed) {
 		super(100, null);
@@ -68,10 +100,21 @@ class Rotator extends Timer implements ActionListener {
 		this.speed = speed;
 		addActionListener(this);
 	}
+	
+	private Color getRandColor() {
+		return new Color(r.nextInt(256), r.nextInt(256), r.nextInt(256));
+	}
 
 	public void actionPerformed(ActionEvent e) {
 		plot.setStartAngle(angle);
 		angle += speed;
+		
+		// LOL
+		if(speed > 100)
+			plot.setBackgroundPaint(getRandColor());
+		else if(speed > 50)
+			plot.setBackgroundPaint(Color.red);
+			
 		if(angle == 360)
 			angle = 0;
 	}
