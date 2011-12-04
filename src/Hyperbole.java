@@ -19,8 +19,15 @@ import org.jfree.data.xy.*;
 import org.jfree.chart.plot.*;
 import org.jfree.chart.renderer.xy.XYSplineRenderer;
 import javax.swing.*;
+import java.awt.event.*;
+import javax.script.*;
 
 public class Hyperbole extends JFrame {
+	private JButton eq;
+	private XYSeries series;
+	private ScriptEngineManager manager;
+	private ScriptEngine engine;
+	
 	public Hyperbole(String applicationTitle, String chartTitle) {
 		super(applicationTitle);
 		setSize(500, 270);
@@ -28,21 +35,58 @@ public class Hyperbole extends JFrame {
 		setFocusable(true);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		
+		manager = new ScriptEngineManager();
+		engine = manager.getEngineByName("js");
+		
+		eq = new JButton("Add equation");
+		
 		XYDataset dataset = createDataset();
 		JFreeChart chart = createChart(dataset, chartTitle);
 		ChartPanel chartPanel = new ChartPanel(chart);
-		setContentPane(chartPanel);
+		
+		JPanel panel1 = new JPanel();
+		panel1.add(chartPanel);
+		JPanel panel2 = new JPanel();
+		panel2.add(eq);
+		JPanel container = new JPanel();
+		container.add(panel1);
+		container.add(panel2);
+		getContentPane().add(container);
+		
+		eq.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clean();
+				draw(JOptionPane.showInputDialog("New equation"));
+			}
+		});
+		
 		pack();
 	}
 	
-	private XYDataset createDataset() {
-		XYSeries series = new XYSeries("Points");
-		for(int i=0; i<100; ++i) {
-			// x^2/12 - y^2/3 = -1
-			double tot = (Math.pow(i, 2)/12) - (Math.pow(i, 2)/3) +1;
-			series.add(i, tot);
+	private void clean() {
+		series.clear();
+	}
+	
+	private void draw(String eq) {
+		try {
+			for(int i=0; i<100; ++i) {
+				String tmp = eq.replace("i", i+"");
+				double tot = Double.parseDouble(engine.eval(tmp).toString());
+				series.add(i, tot);
+			}
 		}
-
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private XYDataset createDataset() {		
+		XYSeries series = new XYSeries("Points");
+		this.series = series;
+		
+		// x^2/12 - y^2/3 = -1
+		draw("(Math.pow(i, 2)/12) - (Math.pow(i*2, 2)/3) +1;");
+		
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		dataset.addSeries(series);
 		

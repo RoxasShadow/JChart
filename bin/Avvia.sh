@@ -5,5 +5,6 @@
 #####################################
 
 # Esegue il jar.
-echo "Avvio in corso...";
-java -jar JChart.jar $1
+java -jar JChart.jar
+read -p "Your choice? " -e input
+java -jar JChart.jar $input

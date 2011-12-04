@@ -17,7 +17,7 @@
 public class JChart {
 	public static void main(String[] args) {
 		if(args.length == 0)
-			System.out.println("[OPT]\n\nbrowseraverage\tShows a graphic comparison of browser usage\nhyperbole\tShows a simple hyperbole\nfreememory\tShows a free memory graphic viewer");
+			System.out.println("browseraverage\tShows a graphic comparison of browser usage\nhyperbole\tShows a simple hyperbole\nfreememory\tShows a free memory graphic viewer");
 		else if(args[0].equals("browseraverage"))
 			new BrowserAverage("Browser usage average", "Browser usage average\nUpdated in 2011 October. Thanks to W3Schools.com.");
 		else if(args[0].equals("hyperbole"))

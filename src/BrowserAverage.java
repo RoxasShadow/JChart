@@ -47,7 +47,7 @@ public class BrowserAverage extends JFrame {
 		JPanel container = new JPanel();
 		container.add(panel1);
 		container.add(panel2);
-		getContentPane().add(container); 
+		getContentPane().add(container);
 	
 		moarspeed.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
